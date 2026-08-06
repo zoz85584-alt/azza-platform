@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mrs. Azza Elmorshedy - المنصة التعليمية</title>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-pink: #FF69B4;
+            --accent-purple: #8A2BE2;
+            --accent-purple-glow: rgba(138, 43, 226, 0.4);
+            --bg-color: #0D111A;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --text-main: #FFFFFF;
+            --text-sub: #A0AEC0;
+            --glass-nav: rgba(13, 17, 26, 0.85);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="light"] {
+            --bg-color: #FDF8FF;
+            --card-bg: rgba(255, 255, 255, 0.7);
+            --border-color: rgba(138, 43, 226, 0.15);
+            --text-main: #1A202C;
+            --text-sub: #4A5568;
+            --glass-nav: rgba(253, 248, 255, 0.9);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); overflow-x: hidden; transition: var(--transition); position: relative; }
+
+        #particles-js { position: fixed; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+
+        /* Navbar */
+        .navbar {
+            position: fixed; top: 0; width: 100%; display: flex; justify-content: space-between; align-items: center;
+            padding: 1rem 8%; background: var(--glass-nav); backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color); z-index: 100; transition: var(--transition);
+        }
+        .logo { font-size: 1.3rem; font-weight: 800; background: linear-gradient(45deg, var(--primary-pink), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .nav-links { display: flex; list-style: none; gap: 1.5rem; }
+        .nav-links a { text-decoration: none; color: var(--text-main); font-weight: 600; font-size: 0.95rem; }
+        .nav-links a:hover { color: var(--primary-pink); }
+        
+        .nav-actions { display: flex; align-items: center; gap: 0.8rem; }
+        .theme-toggle, .menu-btn { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.5rem 0.8rem; border-radius: 50px; cursor: pointer; font-size: 1rem; }
+        .menu-btn { display: none; }
+        
+        .btn-login { background: linear-gradient(135deg, var(--accent-purple), var(--primary-pink)); color: white; padding: 0.5rem 1.2rem; border-radius: 50px; text-decoration: none; font-weight: 700; border: none; cursor: pointer; box-shadow: 0 4px 15px var(--accent-purple-glow); }
+
+        /* Mobile Side Menu */
+        .side-menu {
+            position: fixed; top: 0; right: -100%; width: 280px; height: 100%; background: var(--bg-color);
+            border-left: 1px solid var(--border-color); z-index: 200; padding: 2rem 1.5rem; transition: var(--transition);
+            box-shadow: -5px 0 25px rgba(0,0,0,0.5);
+        }
+        .side-menu.active { right: 0; }
+        .side-menu-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        .side-menu-links { list-style: none; display: flex; flex-direction: column; gap: 1.2rem; }
+        .side-menu-links a { text-decoration: none; color: var(--text-main); font-weight: 700; font-size: 1.1rem; display: flex; align-items: center; gap: 0.8rem; }
+
+        /* Modals */
+        .modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+            display: none; justify-content: center; align-items: center; z-index: 300; padding: 1rem;
+        }
+        .modal.active { display: flex; }
+        .modal-card {
+            background: var(--bg-color); border: 1px solid var(--border-color); padding: 2rem; border-radius: 24px;
+            width: 100%; max-width: 400px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .close-modal { position: absolute; top: 1rem; left: 1rem; background: none; border: none; color: var(--text-sub); font-size: 1.2rem; cursor: pointer; }
+
+        .input-group { margin-bottom: 1.2rem; }
+        .input-group label { display: block; margin-bottom: 0.4rem; font-weight: 600; font-size: 0.9rem; }
+        .input-group input { width: 100%; padding: 0.7rem 1rem; border-radius: 12px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-main); outline: none; }
+
+        /* Hero */
+        .hero { min-height: 85vh; display: flex; align-items: center; justify-content: space-between; padding: 7rem 8% 3rem; position: relative; z-index: 2; }
+        .hero-content { max-width: 550px; }
+        .hero-title { font-size: 2.3rem; font-weight: 800; line-height: 1.3; margin-bottom: 1rem; }
+        .hero-title span { color: var(--primary-pink); }
+        .hero-subtitle { font-size: 1rem; color: var(--text-sub); margin-bottom: 2rem; }
+        .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .btn-purple { background: var(--accent-purple); color: white; padding: 0.7rem 1.8rem; border-radius: 12px; text-decoration: none; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; }
+        .btn-whatsapp { background: #25D366; color: white; padding: 0.7rem 1.8rem; border-radius: 12px; text-decoration: none; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; }
+
+        .hero-image-container { position: relative; width: 250px; height: 250px; }
+        .hero-avatar { width: 100%; height: 100%; border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; background: linear-gradient(45deg, var(--accent-purple), var(--primary-pink)); display: flex; align-items: center; justify-content: center; overflow: hidden; animation: morph 8s ease-in-out infinite; border: 3px solid rgba(255, 255, 255, 0.2); }
+        .hero-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        @keyframes morph { 0% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; } 50% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; } 100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; } }
+
+        /* Sections */
+        .section-title { text-align: center; margin-bottom: 2rem; }
+        .section-title h2 { font-size: 2rem; font-weight: 800; }
+        .section-title p { color: var(--text-sub); }
+
+        .courses-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+        .course-card { background: var(--card-bg); border: 1px solid var(--border-color); backdrop-filter: blur(12px); border-radius: 20px; padding: 1.5rem; transition: var(--transition); }
+        .course-card:hover { transform: translateY(-5px); border-color: var(--primary-pink); }
+
+        /* Quiz UI Demo */
+        .quiz-container { background: var(--card-bg); border: 1px solid var(--border-color); backdrop-filter: blur(16px); padding: 2rem; border-radius: 24px; max-width: 700px; margin: 0 auto; }
+        .quiz-option { background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); padding: 0.8rem 1.2rem; border-radius: 12px; margin-bottom: 0.8rem; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 0.8rem; }
+        .quiz-option:hover, .quiz-option.selected { border-color: var(--primary-pink); background: rgba(255,105,180,0.1); }
+
+        @media (max-width: 968px) {
+            .hero { flex-direction: column-reverse; text-align: center; gap: 2rem; }
+            .hero-btns { justify-content: center; }
+            .nav-links { display: none; }
+            .menu-btn { display: block; }
+            .hero-image-container { width: 200px; height: 200px; margin: 0 auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="particles-js"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo"><i class="fa-solid fa-flask"></i> Mrs. Azza Elmorshedy</div>
+        <ul class="nav-links">
+            <li><a href="#hero">الرئيسية</a></li>
+            <li><a href="#paid-courses">الكورسات المدفوعة</a></li>
+            <li><a href="#free-courses">الشروحات المجانية</a></li>
+            <li><a href="#quiz">تجربة الامتحان</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button class="theme-toggle" id="themeToggle"><i class="fa-solid fa-moon"></i></button>
+            <button class="btn-login" id="openLogin">تسجيل الدخول</button>
+            <button class="menu-btn" id="openSideMenu"><i class="fa-solid fa-bars"></i></button>
+        </div>
+    </nav>
+
+    <!-- Side Menu (موبايل والقائمة الجانبية) -->
+    <div class="side-menu" id="sideMenu">
+        <div class="side-menu-header">
+            <div class="logo"><i class="fa-solid fa-flask"></i> القائمة</div>
+            <button class="close-modal" id="closeSideMenu"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <ul class="side-menu-links">
+            <li><a href="#hero"><i class="fa-solid fa-house" style="color:var(--primary-pink)"></i> الرئيسية</a></li>
+            <li><a href="#paid-courses"><i class="fa-solid fa-lock" style="color:var(--accent-purple)"></i> الكورسات المدفوعة</a></li>
+            <li><a href="#free-courses"><i class="fa-solid fa-play-circle" style="color:#25D366"></i> الكورسات المجانية</a></li>
+            <li><a href="#quiz"><i class="fa-solid fa-file-pen" style="color:var(--primary-pink)"></i> تجربة الامتحان</a></li>
+        </ul>
+    </div>
+
+    <!-- Modal تسجيل الدخول -->
+    <div class="modal" id="loginModal">
+        <div class="modal-card">
+            <button class="close-modal" id="closeLogin"><i class="fa-solid fa-xmark"></i></button>
+            <h3 style="margin-bottom: 0.5rem; text-align: center;">تسجيل دخول الطالب</h3>
+            <p style="color: var(--text-sub); text-align: center; font-size: 0.85rem; margin-bottom: 1.5rem;">ادخل رقم الهاتف وكلمة السر لمتابعة حصصك</p>
+            
+            <form onsubmit="event.preventDefault(); alert('تم تسجيل الدخول بنجاح! (عرض إستكشافي)'); document.getElementById('loginModal').classList.remove('active');">
+                <div class="input-group">
+                    <label>رقم هاتف الطالب / ولي الأمر</label>
+                    <input type="tel" placeholder="010XXXXXXXX" required>
+                </div>
+                <div class="input-group">
+                    <label>كلمة السر</label>
+                    <input type="password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-login" style="width: 100%; padding: 0.8rem; border-radius: 12px; margin-top: 0.5rem;">دخول المنصة</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">تعلمي الكيمياء والعلوم بأسهل شرح مع <br><span>Mrs. Azza Elmorshedy</span></h1>
+            <p class="hero-subtitle">منصة تعليمية متكاملة تضمن لك أعلى الدرجات من خلال شرح مبسط، امتحانات تفاعلية، ومتابعة دورية.</p>
+            <div class="hero-btns">
+                <a href="#paid-courses" class="btn-purple"><i class="fa-solid fa-rocket"></i> ابدأ التعلم</a>
+                <a href="https://wa.me/20100871335" target="_blank" class="btn-whatsapp"><i class="fa-brands fa-whatsapp"></i> احجز الآن</a>
+            </div>
+        </div>
+        <div class="hero-image-container">
+            <div class="hero-avatar">
+                <img src="https://i.ibb.co/HLpPYp3s/1000101612.jpg" alt="Mrs. Azza Logo">
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم الكورسات المدفوعة -->
+    <section id="paid-courses" style="padding: 4rem 8%;">
+        <div class="section-title">
+            <h2><i class="fa-solid fa-crown" style="color: #FFD700;"></i> الكورسات المدفوعة (الاشتراكات)</h2>
+            <p>اشتراك الشهر يشمل الحصص، الامتحانات والتصحيح الدائم</p>
+        </div>
+        <div class="courses-grid">
+            <div class="course-card">
+                <span style="background: rgba(255, 105, 180, 0.15); color: var(--primary-pink); padding: 0.3rem 0.8rem; border-radius: 50px; font-size: 0.8rem; font-weight: 700;">الصف الأول الثانوي</span>
+                <h3 style="margin: 0.8rem 0 0.5rem;">علوم متكاملة - الترم الثاني</h3>
+                <p style="color: var(--text-sub); font-size: 0.85rem; margin-bottom: 1rem;">شرح المنهج كاملاً + ملخصات PDF + 4 امتحانات شهرياً.</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+                    <span style="color: var(--primary-pink); font-weight: 800; font-size: 1.1rem;">اشترك الآن</span>
+                    <button class="btn-login" onclick="alert('سوف يتم توجيه الطالب للواتساب أو وسيلة الدفع للاشتراك!')">اشترك في الكورس</button>
+                </div>
+            </div>
+
+            <div class="course-card">
+                <span style="background: rgba(255, 105, 180, 0.15); color: var(--primary-pink); padding: 0.3rem 0.8rem; border-radius: 50px; font-size: 0.8rem; font-weight: 700;">الصف الثاني الثانوي</span>
+                <h3 style="margin: 0.8rem 0 0.5rem;">الكيمياء العامة والمتطورة</h3>
+                <p style="color: var(--text-sub); font-size: 0.85rem; margin-bottom: 1rem;">تأسيس التفاعلات + حل كتاب الامتحان + متابعة أولياء الأمور.</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+                    <span style="color: var(--primary-pink); font-weight: 800; font-size: 1.1rem;">اشترك الآن</span>
+                    <button class="btn-login" onclick="alert('سوف يتم توجيه الطالب للواتساب أو وسيلة الدفع للاشتراك!')">اشترك في الكورس</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم الفيديوهات المجانية (من القناة) -->
+    <section id="free-courses" style="padding: 4rem 8%; background: rgba(0,0,0,0.15);">
+        <div class="section-title">
+            <h2><i class="fa-brands fa-youtube" style="color: #FF0000;"></i> الشروحات والتقييمات المجانية</h2>
+            <p>عينة من فيديوهات القناة المتاحة مجاناً لجميع الطلاب</p>
+        </div>
+        <div class="courses-grid">
+            <div class="course-card">
+                <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; margin-bottom: 1rem;">
+                    <iframe style="position: absolute; top:0; left: 0; width: 100%; height: 100%; border:0;" 
+                        src="https://www.youtube.com/embed/live_stream?channel=azza_elmorshedy" allowfullscreen>
+                    </iframe>
+                </div>
+                <h3>حل التقييم الأسبوعي الأول 2026</h3>
+                <p style="color: var(--text-sub); font-size: 0.85rem; margin-top: 0.3rem;">الصف الأول الثانوي - الترم الثاني</p>
+            </div>
+            
+            <div class="course-card">
+                <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; margin-bottom: 1rem;">
+                    <iframe style="position: absolute; top:0; left: 0; width: 100%; height: 100%; border:0;" 
+                        src="https://www.youtube.com/embed/live_stream?channel=azza_elmorshedy" allowfullscreen>
+                    </iframe>
+                </div>
+                <h3>مراجعة ليلة الامتحان - علوم إعدادي</h3>
+                <p style="color: var(--text-sub); font-size: 0.85rem; margin-top: 0.3rem;">حل أهم أسئلة المحافظات</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم تجربة الامتحان التفاعلي (Interactive Quiz) -->
+    <section id="quiz" style="padding: 4rem 8%;">
+        <div class="section-title">
+            <h2><i class="fa-solid fa-square-poll-vertical" style="color: var(--primary-pink);"></i> نظام الامتحانات والتصحيح المباشر</h2>
+            <p>تجربة حية لنظام الاختبارات التفاعلية كأنك طالب على المنصة</p>
+        </div>
+
+        <div class="quiz-container" id="quizBox">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.8rem;">
+                <span style="font-weight: 700; color: var(--primary-pink);">اختبار شهر العلوم (تجريبي)</span>
+                <span style="background: rgba(255,105,180,0.15); padding: 0.3rem 0.8rem; border-radius: 50px; font-size: 0.85rem; color: var(--primary-pink);"><i class="fa-solid fa-clock"></i> 05:00</span>
+            </div>
+
+            <!-- سؤال 1 -->
+            <div class="question-step" id="q1">
+                <h4 style="margin-bottom: 1rem; font-size: 1.1rem;">س1: ما هو التفاعل الكيميائي الذي يمتص حرارة من البيئة المحيطة؟</h4>
+                <div class="quiz-option" onclick="selectOpt(this, 'q1')">أ) تفاعل طارد للحرارة</div>
+                <div class="quiz-option" onclick="selectOpt(this, 'q1', true)">ب) تفاعل ماص للحرارة (الإجابة الصحيحة)</div>
+                <div class="quiz-option" onclick="selectOpt(this, 'q1')">ج) تفاعل التعادل</div>
+                <button class="btn-login" style="margin-top: 1rem; width: 100%;" onclick="nextQuestion()">السؤال التالي <i class="fa-solid fa-arrow-left"></i></button>
+            </div>
+
+            <!-- سؤال 2 -->
+            <div class="question-step" id="q2" style="display: none;">
+                <h4 style="margin-bottom: 1rem; font-size: 1.1rem;">س2: وحدات بناء المادة التي تتكون من بروتونات ونيوترونات وإلكترونات هي:</h4>
+                <div class="quiz-option" onclick="selectOpt(this, 'q2', true)">أ) الذرة (الإجابة الصحيحة)</div>
+                <div class="quiz-option" onclick="selectOpt(this, 'q2')">ب) الجزئ</div>
+                <div class="quiz-option" onclick="selectOpt(this, 'q2')">ج) العنصر</div>
+                <button class="btn-login" style="margin-top: 1rem; width: 100%; background: linear-gradient(135deg, #25D366, #128C7E);" onclick="submitQuiz()">إنهاء الامتحان وتصحيح النتيجة <i class="fa-solid fa-check"></i></button>
+            </div>
+
+            <!-- شاشة النتيجة -->
+            <div id="quizResult" style="display: none; text-align: center; padding: 1.5rem 0;">
+                <i class="fa-solid fa-circle-check" style="font-size: 3.5rem; color: #25D366; margin-bottom: 1rem;"></i>
+                <h3>تم تسليم الامتحان بنجاح!</h3>
+                <p style="font-size: 1.3rem; margin: 0.8rem 0; font-weight: 800; color: var(--primary-pink);">درجتك: <span id="scoreText">10</span> / 10</p>
+                <p style="color: var(--text-sub); font-size: 0.9rem;">ممتاز يا بطل! تم إرسال نتيجة الاختبار تلقائياً لولي الأمر وللوحة التحكم.</p>
+                <button class="btn-purple" style="margin: 1.5rem auto 0;" onclick="resetQuiz()">إعادة التجربة</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS('particles-js', {
+            "particles": { "number": { "value": 30 }, "color": { "value": "#FF69B4" }, "opacity": { "value": 0.3 }, "size": { "value": 4 }, "line_linked": { "enable": true, "distance": 150, "color": "#8A2BE2", "opacity": 0.2 } }
+        });
+
+        // Toggle Theme
+        const themeToggleBtn = document.getElementById('themeToggle');
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            themeToggleBtn.innerHTML = newTheme === 'dark' ? '<i class="fa-solid fa-moon"></i>' : '<i class="fa-solid fa-sun"></i>';
+        });
+
+        // Side Menu Toggle
+        const sideMenu = document.getElementById('sideMenu');
+        document.getElementById('openSideMenu').onclick = () => sideMenu.classList.add('active');
+        document.getElementById('closeSideMenu').onclick = () => sideMenu.classList.remove('active');
+
+        // Modal Login Toggle
+        const loginModal = document.getElementById('loginModal');
+        document.getElementById('openLogin').onclick = () => loginModal.classList.add('active');
+        document.getElementById('closeLogin').onclick = () => loginModal.classList.remove('active');
+
+        // Quiz Logic Demo
+        let score = 0;
+        function selectOpt(el, qId, isCorrect = false) {
+            document.querySelectorAll('#' + qId + ' .quiz-option').forEach(opt => opt.classList.remove('selected'));
+            el.classList.add('selected');
+            el.dataset.correct = isCorrect;
+        }
+
+        function nextQuestion() {
+            const selected = document.querySelector('#q1 .quiz-option.selected');
+            if(!selected) return alert('برجاء اختيار إجابة أولاً!');
+            if(selected.dataset.correct === "true") score += 5;
+            document.getElementById('q1').style.display = 'none';
+            document.getElementById('q2').style.display = 'block';
+        }
+
+        function submitQuiz() {
+            const selected = document.querySelector('#q2 .quiz-option.selected');
+            if(!selected) return alert('برجاء اختيار إجابة أولاً!');
+            if(selected.dataset.correct === "true") score += 5;
+            
+            document.getElementById('q2').style.display = 'none';
+            document.getElementById('quizResult').style.display = 'block';
+            document.getElementById('scoreText').innerText = score;
+        }
+
+        function resetQuiz() {
+            score = 0;
+            document.getElementById('quizResult').style.display = 'none';
+            document.getElementById('q1').style.display = 'block';
+            document.querySelectorAll('.quiz-option').forEach(opt => opt.classList.remove('selected'));
+        }
+    </script>
+</body>
+</html>
